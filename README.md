@@ -56,14 +56,11 @@ To keep this repo tied to the challenge and to be fair to all participants, we d
 - February 15, 2025: Phase II starts. Validation datasets are made available. Participants can submit preliminary results and receive feedback on relative scoring for unlimited number of times.
 - April 25, 2025: Phase III starts. Final test datasets are made available.
 - May 13, 2025: Deadline for testing phase.  
-- May 20, 2025: Participants are notified with challenge results and top 2 winners are announced. 
-- June 20, 2025: Top 5 teams receive the awards and certification.
-- July 27-31, 2025: AAPM Annual Meeting & Exhibition: top 2 teams will present on their work during a dedicated challenge session. 
-- September 2025: The challenge organizers summarize the grand challenge in a journal paper. Training and validation datasets and scoring routines will be made public.
+
 
 ## Simplified Background
 
-Radiation therapy (RT) is an essential cancer treatment and is applicable to about 50% of cancer patients. The 3D dose prediction has been important for assisting the RT planning. Ref [[1](#Citation)] could provide decent introduction to the participates without RT background. In addtion, [the summary paper](https://aapm.onlinelibrary.wiley.com/doi/full/10.1002/mp.14845) of a previous related challenge OpenKBP could be helpful (helpful to the RT background, but note contexts in this challenge is quite different from OpenBKP). 
+Radiation therapy (RT) is an essential cancer treatment and is applicable to about 50% of cancer patients. The 3D dose prediction has been important for assisting the RT planning. Ref [[1,2](#Citation)] could provide decent introduction to the participates without RT background. In addtion, [the summary paper](https://aapm.onlinelibrary.wiley.com/doi/full/10.1002/mp.14845) of a previous related challenge OpenKBP could be helpful (helpful to the RT background, but note contexts in this challenge is quite different from OpenBKP). 
 
 It could be helpful to gain more knowledge about RT, however, participants still can do a great job without RT background, since we define the input/output clearly in the task of this challenge. However, if you have limited knowledge about AI and deep learning, you may need to learn fast to achieve the awards :blush:. 
 
@@ -73,7 +70,7 @@ The input of this task includes CT, PTVs/OARs mask, beam geometries and so on. T
 
 ## Data-Understanding-and-Visualization
 
-One example of Eclipse Visulization is shown below. For jupyter visualization with npz, please visit [data_visualization.ipynb](data_visualization.ipynb). 
+One example of Eclipse Visulization is shown below. For jupyter visualization with npz, please visit [data_visual_understand.ipynb](data_visual_understand.ipynb). In this jupyter notebook, we also provide the introduction of some important numbers (e.g., prescribed doses for PTVs) and how to use them. 
 
 ![Visualization using Eclipse](figs/eclipse.png)
 
