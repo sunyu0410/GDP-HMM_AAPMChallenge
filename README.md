@@ -18,7 +18,7 @@ The GDP-HMM repository provides code and tutorial are intended to help get parti
 
 ## Announcements and News 
 
-:warning: The allowed maximum inference time of deep learning module (exclude data preprocessing) is 3 seconds in a 24 GB max GPU. For example, some diffusion models may largely sacrifice time for accuracy.
+:warning: The allowed maximum inference time of deep learning module (exclude data preprocessing) is 3 seconds in a 24 GB max GPU. To align with challenge's objectives, participants are required to develop a generalizable model rather than separate models tailored to individual contexts. See more contexts in [get_started_and_train.ipynb](get_started_and_train.ipynb). 
 
 :rocket: [01/2025] The challenge will be officially started; training data will be released; more details will be supplied. 
 
@@ -82,7 +82,7 @@ See detailed instructions in [get_started_and_train.ipynb](get_started_and_train
 
 ## Evaluation Methods 
 
-Two metrics are used in the evaluation. One is mean absolute error masked by 5 Gy isodose line of reference dose. The motivation is to measure how close the prediction and reference under specific settings (for example, beam geometries). The example code is shown in [evaluation.ipynb](evaluation.ipynb). 
+Two metrics are used in the evaluation. One is mean absolute error masked by 5 Gy isodose line and body mask. The motivation is to measure how close the prediction and reference under specific settings (for example, beam geometries). The example code is shown in [evaluation.ipynb](evaluation.ipynb). 
 
 Another metric is quality index of the deliverable plan generated from the dose prediction following the scorecard described by Ref [[1](#Citation)]. The computation of the metric will be handled by organizer. The participants only need to submit their results or solution package. Only small of number times are allowed to compute the quality index. 
 
@@ -92,7 +92,7 @@ Another metric is quality index of the deliverable plan generated from the dose 
 - **Certificate:** Top five teams will receive certificate endorsed organization team and AAPM.
 - **Authorship:** Top five teams (up to two members per team) will be invited as co-authors on a journal manuscript summarizing the challenge. Additional team members will be acknowledged.
 - **Presentations:** Top two teams will present at the 2025 AAPM Annual Meeting.
-- **Internship Opportunities**: Top three teams (if led by a student) will receive priority consideration for internships at Siemens Healthineers AI Center.
+- **Internship Opportunities**: Lead students of Top five teams will receive priority consideration for internships at Siemens Healthineers AI Center.
 
 
 ## Challenge Organizers 
@@ -105,7 +105,7 @@ Another metric is quality index of the deliverable plan generated from the dose 
 - Masoud Zarepisheh, Ph.D., (Memorial Sloan Kettering Cancer Center)
 - Ali Kamen, Ph.D., (Siemens Healthineers)
 
-Please contact Riqiang Gao with riqiang.gao@siemens-healthineers.com for further questions. 
+Please contact Riqiang Gao with riqiang.gao@siemens-healthineers.com for further questions or collaborations. 
 
 # Citation 
 
