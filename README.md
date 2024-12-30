@@ -1,6 +1,6 @@
 # GDP-HMM_AAPMChallenge
 
-The GDP-HMM repository provides code and tutorial are intended to help get participants started with developing dose prediction models for the GDP-HMM Challenge in AAPM 2025. You can find additional  information in <a href="https://www.aapm.org/GrandChallenge/GDP-HMM/" _target='blank'>AAPM website</a> and <a href="https://qtim-challenges.southcentralus.cloudapp.azure.com/competitions/38/" _target='blank'>challenge platform</a>. 
+The GDP-HMM repository provides code and tutorials designed to help participants get started with developing dose prediction models for the GDP-HMM Challenge at AAPM 2025. Additional information is available on the <a href="https://www.aapm.org/GrandChallenge/GDP-HMM/" _target='blank'>AAPM website</a> and the <a href="https://qtim-challenges.southcentralus.cloudapp.azure.com/competitions/38/" _target='blank'>challenge platform</a>.
 
 # Content 
 
@@ -18,16 +18,16 @@ The GDP-HMM repository provides code and tutorial are intended to help get parti
 
 ## Announcements and News 
 
-:warning: The allowed maximum inference time of deep learning module (exclude data preprocessing) is 3 seconds in a 24 GB max GPU. To align with challenge's objectives, participants are required to develop a generalizable model rather than separate models tailored to individual contexts. See more contexts in [get_started_and_train.ipynb](get_started_and_train.ipynb). 
+:warning: The maximum allowed inference time for the deep learning module (excluding data preprocessing) is 3 seconds on a GPU with up to 24 GB of memory. To align with the challenge's objectives, participants must develop a generalizable model rather than creating separate models tailored to specific contexts. See more explanation in [get_started_and_train.ipynb](get_started_and_train.ipynb) notebook. 
 
 :rocket: [01/2025] The challenge will be officially started; training data will be released; more details will be supplied. 
 
 
 ## What this repo does
 
-- *Simplified RT Background Tutorial*. We provide a link to article about the background of this challenge. This will help participants with limited RT background to quickly get started. 
+- *Simplified RT Background Tutorial*. We provide a simplified background and related articles [[1,2](#Citation)] for the challenge, designed to help participants—especially those with limited radiotherapy knowledge—quickly get started.
 
-- *Data Understanding and Visualization*. We provide jupyter notebook to load and visualize the data step by step, together with explanation. Please also check the article for more information. 
+- *Data Understanding and Visualization*. Jupyter notebook is available to guide participants in loading and visualizing the data step by step, with detailed explanations. For additional information, please refer to the article.
 
 - *Data Preprocess*. We provide code of data preprocess inspired by [[2](#Citation)], including the creation of angle plate and beam plate. 
 
@@ -40,13 +40,13 @@ For any questions related to above, welcome to open issues or email the lead org
 
 ## What this repo does NOT
 
-To keep this repo tied to the challenge and to be fair to all participants, we do not encourage open issues related to below topics. Of course, if you find one topic is really important, welcome to send an email to the lead organizer. We may update our READE.md files and send notifications to participants. The **not-eoncouraged issues of this repo** include 
+To ensure this repository remains focused on the challenge and to maintain fairness for all participants, we discourage opening issues related to the following topics. However, if you believe a topic is critically important, feel free to email the lead organizer. We may update our README.md file and notify participants as needed. The **not-eoncouraged issues of this repo** include 
 
-- *Urgent Request*. We may not be able to monitor the issues of this repo very actively. If you need a urgent response, e.g., if you find the data are broken or cannot access the data, please directly send an email to the lead organizer so we can solve the problem for all participants ASAP.  
+- *Urgent Request*. We may not be able to monitor the issues in this repository very actively. If you need an urgent response, such as encountering broken data or issues accessing the data, please email the lead organizer directly. This will help us address the problem promptly for all participants.
 
-- *AI engineering tricks*. We may not be able to offer suggestions on engineering tricks in this repo. 
+- *AI engineering tricks*. We may not be able to provide suggestions on engineering tricks in this repository.
 
-- *AI Technique Questions of Related Papers*. We may not be able to address AI technique questions of related papers in this repo. However, if it is only about clinical background and related to this challenge, we are happy to take it in either issue or email. 
+- *AI Technique Questions of Related Papers*. We may not be able to address AI technique questions related to papers in this repository. However, if your question pertains to the radiotherapy clinical background, feel free to reach out via an issue or email, and we will be happy to assist.
 
 - *Job Positions in Siemens Healthineers*. We always welcome talent people to join us. However, please send an email rather than open an issue in this repo for questions in this category. 
 
@@ -60,31 +60,29 @@ To keep this repo tied to the challenge and to be fair to all participants, we d
 
 ## Simplified Background
 
-Radiation therapy (RT) is an essential cancer treatment and is applicable to about 50% of cancer patients. The 3D dose prediction has been important for assisting the RT planning. Ref [[1,2](#Citation)] could provide decent introduction to the participates without RT background. In addtion, [the summary paper](https://aapm.onlinelibrary.wiley.com/doi/full/10.1002/mp.14845) of a previous related challenge OpenKBP could be helpful (helpful to the RT background, but note contexts in this challenge is quite different from OpenKBP). 
+Radiation therapy (RT) is a key cancer treatment used in about 50% of cancer cases. 3D dose prediction is vital in RT planning. References [[1,2](#Citation)] offer a good introduction and related works for the challenge background. An simplified introduction to RT and terminologies can be found in the Appendix A of [this paper](https://proceedings.mlr.press/v235/gao24g.html). Additionally, [the summary paper](https://aapm.onlinelibrary.wiley.com/doi/full/10.1002/mp.14845) from a previous related challenge OpenKBP can be helpful, though the context of this challenge is much more heterogenous. 
 
-It could be helpful to gain more knowledge about RT, however, participants still can do a great job without RT background, since we define the input/output clearly in the task of this challenge. However, if you have limited knowledge about AI and deep learning, you may need to learn fast to achieve the awards :blush:. 
+Gaining more knowledge about RT can be helpful, but participants can still perform well without an strong RT background, as we clearly define the input and output in this challenge. However, if your knowledge of AI and deep learning is limited, you may need to learn quickly to achieve the awards. :blush:. 
 
-The input of this task includes CT, PTVs/OARs mask, beam geometries and so on. The output is a 3D dose distribution generated from Eclipse (treatment planning system from Varian) following the method described in [[1](#Citation)]. 
+The input for this task includes CT images, PTVs/OARs masks, beam geometries, and more. The output is a 3D dose distribution generated from Eclipse (Varian’s treatment planning system), following the method described in [[1](#Citation)]. 
 
 ![](figs/baseline.png)
 
-## Data-Understanding-and-Visualization
+## Data Understanding and Visualization
 
-One example of Eclipse Visulization is shown below. For jupyter visualization with npz, please visit [data_visual_understand.ipynb](data_visual_understand.ipynb). In this jupyter notebook, we also provide the introduction of some important numbers (e.g., prescribed doses for PTVs) and how to use them. 
+An example of Eclipse visualization is shown below. For Jupyter visualization with NPZ files, please refer to [data_visual_understand.ipynb](data_visual_understand.ipynb). This notebook also introduces important numbers (e.g., prescribed doses for PTVs) and explains how to use them.
 
 ![Visualization using Eclipse](figs/eclipse.png)
 
 ## Get Started and Training
 
-We provide a training script with less than 40 effective lines of Python/PyTorch code, with minor package dependency. The participarts can start with this very quickly, and adjust the code to more advanced models. 
-
-See detailed instructions in [get_started_and_train.ipynb](get_started_and_train.ipynb). Our target is to help user run the training code in **5 minutes**, and understand the code logic and parameters in **20 minutes**. 
+We provide a training script with fewer than 40 effective lines of Python/PyTorch code and minimal package dependencies. Participants can quickly start with this and adjust the code to build more advanced models. Detailed instructions are available in [get_started_and_train.ipynb](get_started_and_train.ipynb). Our goal is to help user run the training code in **5 minutes**, and understand the code logic and parameters in **20 minutes**. 
 
 ## Evaluation Methods 
 
-Two metrics are used in the evaluation. One is mean absolute error masked by 5 Gy isodose line and body mask. The motivation is to measure how close the prediction and reference under specific settings (for example, beam geometries). The example code is shown in [evaluation.ipynb](evaluation.ipynb). 
+Two metrics are used for evaluation. The first is the mean absolute error, masked by the 5 Gy isodose line and body mask. This metric aims to measure how close the prediction is to the reference under specific settings (e.g., beam geometries). Example code is provided in [evaluation.ipynb](evaluation.ipynb). 
 
-Another metric is quality index of the deliverable plan generated from the dose prediction following the scorecard described by Ref [[1](#Citation)]. The computation of the metric will be handled by organizer. The participants only need to submit their results or solution package. Only small of number times are allowed to compute the quality index. 
+The second metric is the quality index of the deliverable plan generated from the dose prediction, based on the scorecard described in Ref [[1](#Citation)]. The calculation of this metric will be handled by the organizers, and participants only need to submit their results or solution package. A limited number of attempts are allowed to compute the quality index. The final ranking will be based on the average ranking of both metrics. 
 
 ## Prizes and Publication Plan
 
@@ -109,13 +107,13 @@ Please contact Riqiang Gao with riqiang.gao@siemens-healthineers.com for further
 
 # Citation 
 
-To acknowledge the work of challenge organization team and insights from previous publication, please kindly follow the below instructions and beyond. 
+To acknowledge the work of challenge organization team and insights from previous publication, please kindly follow the  instructions below. 
 
-- **Data citation**. Please cite the below technique paper [1] building the dataset (or/and the challenge summary paper when it is available) if you find the data and challenge is helpful to your research. 
+- **Data citation**. If you find the data and challenge helpful for your research, please cite the following technique paper [1] that built the dataset (or/and the challenge summary paper when available). 
 
-- **Baseline citation**. If you find the method and code of data preprocess and data loader in the repo (e.g., creating the angle and beam plates) is inspiring to your work, please cite [2]. If you use or adjust the MedNeXt as your network structure, please cite [3]. 
+- **Baseline citation**. If you find the method and code for data preprocessing and data loading in the repo (e.g., creating the angle and beam plates) inspiring for your work, please cite [2]. If you use or adjust MedNeXt as your network structure, please cite [3]. 
 
-Except above, if you find any resources (including data and code) in this repo for RT is helpful for your research, please kindly cite either [1] or [2]. 
+In addtion to above, if any data and code resources in this repo is helpful for your research, please kindly cite [1] or/and [2]. Please kindly cite external linked resources accordingly if they helped you. 
 
 ```
 [1] Riqiang Gao, Mamadou Diallo, Han Liu, Anthony Magliari, Wilko Verbakel, Sandra Meyers, Masoud Zarepisheh, Rafe Mcbeth, Simon Arberet, Martin Kraus, Florin Ghesu, Ali Kamen. Automating High Quality RT Planning at Scale. Technique Note, 2025 (to be public soon).

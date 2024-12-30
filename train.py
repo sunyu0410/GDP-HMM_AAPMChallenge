@@ -5,7 +5,15 @@ from nnunet_mednext import create_mednext_v1
 import data_loader
 import yaml
 import argparse 
-    
+import os
+
+'''
+In this script, we provide a basic pipeline designed for successful execution. There are numerous advanced AI methodologies and strategies that could potentially improve the model's performance. We encourage participants to explore these AI technologies independently. Please note that discussions about these explorations should not be raised in the repository issues.
+
+Reminder: The information provided in the meta files is crucial, as it directly impacts how the reference is created. An example of how to use these information are provided in the data_loader.py. If you have questions related to clinical backgrounds, feel free to start a discussion.
+'''
+
+  
 parser = argparse.ArgumentParser(description='Process some integers.')
 
 parser.add_argument('cfig_path',  type = str)
@@ -29,13 +37,20 @@ model = create_mednext_v1( num_input_channels = cfig['model_params']['num_input_
 ).to(device)
 
 # ------------ loss -----------------------# 
-optimizer = optim.Adam(model.parameters(), lr=cfig['lr'])
+optimizer = optim.Adam([{'params': model.parameters(), 'initial_lr':cfig['lr']}], lr=cfig['lr'])
+
+scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer,T_max= len(train_loader) * cfig['num_epochs'], last_epoch=cfig['num_epochs'])
+
 criterion = nn.L1Loss()
 
 # -----------Training loop --------------- #
+
+nbatch_per_log = max(int(len(train_loader) / 20), 1)  
+
 for epoch in range(cfig['num_epochs']):
     model.train()
-    for i, data_dict in enumerate(train_loader):
+    epoch_loss = 0
+    for batch_idx, data_dict in enumerate(train_loader):
         # Forward pass
         outputs = model(data_dict['data'].to(device))
         loss = criterion(outputs, data_dict['label'].to(device))
@@ -43,4 +58,22 @@ for epoch in range(cfig['num_epochs']):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        print(f"Epoch [{epoch+1}/{cfig['num_epochs']}], Step [{i+1}/{len(train_loader)}], Loss: {loss.item():.4f}")
+        
+        scheduler.step()
+
+        epoch_loss += loss.item()
+        
+        if batch_idx % nbatch_per_log == 0:
+        
+            current_lr = scheduler.get_last_lr()[0]
+            print(f"Epoch [{epoch+1}/{cfig['num_epochs']}], Batch [{batch_idx+1}/{len(train_loader)}], LR: {current_lr:.6f}, Loss: {loss.item():.4f}")
+
+        if batch_idx == 3 and epoch % 50 == 0:
+            os.system('nvidia-smi')
+    
+    # Average loss for the epoch
+    avg_epoch_loss = epoch_loss / len(train_loader)
+    print(f"Epoch [{epoch+1}/{cfig['num_epochs']}] Completed: Avg Loss: {avg_epoch_loss:.4f}")
+
+    model_save_path = os.path.join(cfig['save_model_root'], 'last_model.pth')
+    torch.save(model.state_dict(), model_save_path)

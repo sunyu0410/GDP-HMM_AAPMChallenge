@@ -20,12 +20,16 @@ from scipy import ndimage
 import random
 
 
-OAR_LIST = [ 'Cochlea_L', 'Cochlea_R','Eyes', 'Lens_L', 'Lens_R', 'OpticNerve_L', 'OpticNerve_R', 'Chiasim', 'LacrimalGlands', 'BrachialPlexus', 'Brain',  'BrainStem_03',  'Esophagus', 'Lips', 'Lungs', 'Trachea', 'Posterior_Neck', 'Shoulders', 'Larynx-PTV', 'Mandible-PTV', 'OCavity-PTV', 'ParotidCon-PTV', 'Parotidlps-PTV', 'Parotids-PTV', 'PharConst-PTV', 'Submand-PTV', 'SubmandL-PTV', 'SubmandR-PTV', 'Thyroid-PTV', 'SpinalCord_05']
+HaN_OAR_LIST = [ 'Cochlea_L', 'Cochlea_R','Eyes', 'Lens_L', 'Lens_R', 'OpticNerve_L', 'OpticNerve_R', 'Chiasim', 'LacrimalGlands', 'BrachialPlexus', 'Brain',  'BrainStem_03',  'Esophagus', 'Lips', 'Lungs', 'Trachea', 'Posterior_Neck', 'Shoulders', 'Larynx-PTV', 'Mandible-PTV', 'OCavity-PTV', 'ParotidCon-PTV', 'Parotidlps-PTV', 'Parotids-PTV', 'PharConst-PTV', 'Submand-PTV', 'SubmandL-PTV', 'SubmandR-PTV', 'Thyroid-PTV', 'SpinalCord_05']
 
-OAR_DICT = {OAR_LIST[i]: (i+1) for i in range(len(OAR_LIST))}
+HaN_OAR_DICT = {HaN_OAR_LIST[i]: (i+1) for i in range(len(HaN_OAR_LIST))}
+
+Lung_OAR_LIST = ["PTV_Ring.3-2", "Total Lung-GTV", "SpinalCord",  "Heart",  "LAD", "Esophagus",  "BrachialPlexus",  "GreatVessels", "Trachea", "Body_Ring0-3"]
+
+Lung_OAR_DICT = {Lung_OAR_LIST[i]: (i+10) for i in range(len(Lung_OAR_LIST))}
 
 
-def combine_oar(tmp_dict, need_list,norm_oar = True):
+def combine_oar(tmp_dict, need_list,norm_oar = True, OAR_DICT = None):
     
     comb_oar = torch.zeros(tmp_dict['img'].shape)  
     cat_oar = torch.zeros([32] + list(tmp_dict['img'].shape)[1:])
@@ -162,7 +166,9 @@ class MyDataset(Dataset):
         ptv_highdose =  self.scale_dose_Dict[PatientID]['PTV_High']['PDose']
         In_dict['dose'] = In_dict['dose'] * In_dict['dose_scale'] 
 
-        norm_scale = ptv_highdose / (np.percentile(In_dict['dose'][In_dict['PTVHighOPT'].astype('bool')], 3) + 1e-5) # D97
+        PTVHighOPT = self.scale_dose_Dict[PatientID]['PTV_High']['OPTName']
+
+        norm_scale = ptv_highdose / (np.percentile(In_dict['dose'][In_dict[PTVHighOPT].astype('bool')], 3) + 1e-5) # D97
         In_dict['dose'] = In_dict['dose'] * norm_scale / self.cfig['dose_div_factor']
         
         In_dict['dose'] = np.clip(In_dict['dose'], 0, ptv_highdose * 1.2)
@@ -176,7 +182,13 @@ class MyDataset(Dataset):
         z_end = int(isocenter[0]) + 5
         z_begin = max(0, z_begin)
         z_end = min(angle_plate_3D.shape[0], z_end)
+        
+        if 'angle_plate' not in In_dict.keys():
+            print (' **************** angle_plate error in ', data_path)
+            In_dict['angle_plate'] = np.ones(In_dict['img'][0].shape)
+
         D3_plate = np.repeat(In_dict['angle_plate'][np.newaxis, :, :], z_end - z_begin, axis = 0)
+        
         if D3_plate.shape[1] != angle_plate_3D.shape[1] or D3_plate.shape[2] != angle_plate_3D.shape[2]:
             D3_plate = ndimage.zoom(D3_plate, (1, angle_plate_3D.shape[1] / D3_plate.shape[1], angle_plate_3D.shape[2] / D3_plate.shape[2]), order = 0)
         angle_plate_3D[z_begin: z_end] = D3_plate
@@ -202,14 +214,21 @@ class MyDataset(Dataset):
 
         In_dict = self.aug(In_dict)
 
+        if self.site_list[index] > 1.5:
+            OAR_LIST = HaN_OAR_LIST
+            OAR_DICT = HaN_OAR_DICT
+        else:
+            OAR_LIST = Lung_OAR_LIST
+            OAR_DICT = Lung_OAR_DICT
 
         data_dict = dict()  
+
         try:
-            need_list = list(self.pat_obj_dict[ID.split('+')[0]].values())[0] # list(a.values())[0]
+            need_list = self.pat_obj_dict[ID.split('+')[0]] # list(a.values())[0]
         except:
             need_list = OAR_LIST
-            print (ID.split('+')[0], ID.split('+')[1], '-------------not in the pat_obj_dict')
-        comb_oar, cat_oar  = combine_oar(In_dict, need_list, self.cfig['norm_oar'])
+            print (ID.split('+')[0],  '-------------not in the pat_obj_dict')
+        comb_oar, cat_oar  = combine_oar(In_dict, need_list, self.cfig['norm_oar'], OAR_DICT)
 
         opt_dose_dict = {}
         dose_dict = {}
@@ -283,16 +302,15 @@ class GetLoader(object):
 if __name__ == '__main__':
 
     cfig = {
-            'train_bs': 2,
+            'train_bs': 8,
              'val_bs': 2, 
-             'num_workers': 0, 
-             'csv_root': 'meta_data.csv',
-             'scale_dose_dict': 'PTV_DICT.json',
-             'pat_obj_dict': 'Pat_Obj_dict.json',
+             'num_workers': 8, 
+             'csv_root': 'meta_files/meta_data.csv',
+             'scale_dose_dict': 'meta_files/PTV_DICT.json',
+             'pat_obj_dict': 'meta_files/Pat_Obj_DICT.json',
              'down_HU': -1000,
              'up_HU': 1000,
              'denom_norm_HU': 500,
-             '3d_scale': 5,
              'in_size': (96, 128, 144), 
              'out_size': (96, 128, 144), 
              'norm_oar': True,
@@ -304,6 +322,7 @@ if __name__ == '__main__':
     train_loader = loaders.train_dataloader()
 
     for i, data in enumerate(train_loader):
+
         
         print (data['data'].shape, data['label'].shape, data['beam_plate'].shape, data['prompt'].shape)
 
