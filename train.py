@@ -8,12 +8,16 @@ import argparse
 import os
 
 '''
-In this script, we provide a basic pipeline designed for successful execution. There are numerous advanced AI methodologies and strategies that could potentially improve the model's performance. We encourage participants to explore these AI technologies independently. Please note that discussions about these explorations should not be raised in the repository issues.
+In this script, we provide a basic (and simple) pipeline designed for successful execution.
+There are numerous advanced AI methodologies and strategies that could potentially improve the model's performance. 
+We encourage participants to explore these AI technologies independently. The organizers will not provide much support for these explorations.
+Please note that discussions/questions about AI tech explorations are not supposed to be raised in the repository issues.
 
-Reminder: The information provided in the meta files is crucial, as it directly impacts how the reference is created. An example of how to use these information are provided in the data_loader.py. If you have questions related to clinical backgrounds, feel free to start a discussion.
+Reminder: The information provided in the meta files is crucial, as it directly impacts how the reference is created. 
+An example of how to use these information are provided in the data_loader.py. 
+If you have questions related to clinical backgrounds, feel free to start a discussion.
 '''
 
-  
 parser = argparse.ArgumentParser(description='Process some integers.')
 
 parser.add_argument('cfig_path',  type = str)
@@ -53,6 +57,12 @@ for epoch in range(cfig['num_epochs']):
     for batch_idx, data_dict in enumerate(train_loader):
         # Forward pass
         outputs = model(data_dict['data'].to(device))
+
+        if cfig['act_sig']:
+            outputs = torch.sigmoid(outputs.clone())  
+            
+        outputs = outputs * cfig['scale_out']
+
         loss = criterion(outputs, data_dict['label'].to(device))
         # Backward pass and optimization
         optimizer.zero_grad()

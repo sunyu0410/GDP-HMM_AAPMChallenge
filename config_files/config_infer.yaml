@@ -2,12 +2,12 @@
 
 loader_params: 
 
-    'train_bs': 4
-    'val_bs': 8
-    'csv_root': 'meta_files/meta_data.csv'
+    'train_bs': 1
+    'val_bs': 1
+    'csv_root': 'meta_files/meta_data_infer.csv'
     'scale_dose_dict': 'meta_files/PTV_DICT.json'
     'pat_obj_dict': 'meta_files/Pat_Obj_DICT.json'
-    'num_workers': 8
+    'num_workers': 2
 
     'down_HU': -1000
     'up_HU': 1000
@@ -18,7 +18,6 @@ loader_params:
 
     'norm_oar': True
     'CatStructures': False
-
     'dose_div_factor': 10 
     
     
@@ -28,16 +27,18 @@ model_params:
     model_id: 'B'
     kernel_size: 3
     deep_supervision: False
-    
-lr: 0.0001
 
+lr: 0.0001
 num_epochs: 400
 
 act_sig: True
-
 scale_out: 7.5
 
-scale_loss: 4
+model_from_lightning: True
+save_model_path: ../pretrainmodel/GDP-HMM_Challenge/lightning/best_model-epoch=315-train_loss=0.1989.ckpt
+save_pred_path: 'results/lightning'
 
-#save_model_root: ../pretrainmodel/GDP-HMM_Challenge
-save_model_root: ../pretrainmodel/GDP-HMM_Challenge/lightning
+
+# model_from_lightning: False
+# save_model_path: ../pretrainmodel/GDP-HMM_Challenge/last_model.pth
+# save_pred_path: 'results'

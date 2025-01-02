@@ -1,12 +1,13 @@
-from monai.transforms import (
-    Compose,
-    Resized,
-    RandFlipd, 
-    RandRotated,
-    SpatialPadd, 
-    SpatialCropd,
-    RandSpatialCropd
-)
+
+
+'''
+This script is adapted from the data loader of below CVPR paper. 
+If you find the functions in this script are helpful to you (for the challenge and beyond), please kindly cite the original paper: 
+
+Riqiang Gao, Bin Lou, Zhoubing Xu, Dorin Comaniciu, and Ali Kamen. 
+"Flexible-cm gan: Towards precise 3d dose prediction in radiotherapy." 
+In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2023.
+'''
 
 from torch.utils.data import Dataset, DataLoader
 import pandas as pd
@@ -16,8 +17,7 @@ import json
 import pdb
 
 from scipy import ndimage 
-
-import random
+from toolkit import *
 
 
 HaN_OAR_LIST = [ 'Cochlea_L', 'Cochlea_R','Eyes', 'Lens_L', 'Lens_R', 'OpticNerve_L', 'OpticNerve_R', 'Chiasim', 'LacrimalGlands', 'BrachialPlexus', 'Brain',  'BrainStem_03',  'Esophagus', 'Lips', 'Lungs', 'Trachea', 'Posterior_Neck', 'Shoulders', 'Larynx-PTV', 'Mandible-PTV', 'OCavity-PTV', 'ParotidCon-PTV', 'Parotidlps-PTV', 'Parotids-PTV', 'PharConst-PTV', 'Submand-PTV', 'SubmandL-PTV', 'SubmandR-PTV', 'Thyroid-PTV', 'SpinalCord_05']
@@ -28,79 +28,6 @@ Lung_OAR_LIST = ["PTV_Ring.3-2", "Total Lung-GTV", "SpinalCord",  "Heart",  "LAD
 
 Lung_OAR_DICT = {Lung_OAR_LIST[i]: (i+10) for i in range(len(Lung_OAR_LIST))}
 
-
-def combine_oar(tmp_dict, need_list,norm_oar = True, OAR_DICT = None):
-    
-    comb_oar = torch.zeros(tmp_dict['img'].shape)  
-    cat_oar = torch.zeros([32] + list(tmp_dict['img'].shape)[1:])
-    for key in OAR_DICT.keys():
-        
-        if key not in need_list:
-            continue
-
-        if key in tmp_dict.keys():
-            single_oar = tmp_dict[key]
-        else:
-            single_oar = torch.zeros(tmp_dict['img'].shape)
-
-        cat_oar[OAR_DICT[key]-1: OAR_DICT[key]]  = single_oar
-
-        if norm_oar:
-            comb_oar = torch.maximum(comb_oar, single_oar.round() * (1.0 + 4.0 * OAR_DICT[key] / 30))
-        else:
-            comb_oar = torch.maximum(comb_oar, single_oar.round() * OAR_DICT[key])  # changed in this version
-
-    return comb_oar, cat_oar
-
-
-def combine_ptv(tmp_dict,  scaled_dose_dict):
-
-    prescribed_dose = []
-    
-    cat_ptv = torch.zeros([3] + list(tmp_dict['img'].shape)[1:])
-    prescribed_dose = [0] * 3
-
-    comb_ptv = torch.zeros(tmp_dict['img'].shape)
-
-    cnt = 0
-    for key in scaled_dose_dict.keys():
-       
-       tmp_ptv = tmp_dict[key] * scaled_dose_dict[key]  #(tmp_detail_dict[tv_name][key]['D98'] + tmp_detail_dict[tv_name][key]['D95'] ) / scale / 2
-       
-       prescribed_dose[cnt] =  scaled_dose_dict[key] #(tmp_detail_dict[tv_name][key]['D98'] + tmp_detail_dict[tv_name][key]['D95'] ) / scale / 2
-       
-       cat_ptv[cnt] = tmp_ptv 
-       comb_ptv = torch.maximum(comb_ptv, tmp_ptv)
-
-       cnt += 1
-
-    # sort the cat_ptv according to the prescribed dose
-    paired = [(cat_ptv[i], prescribed_dose[i]) for i in range(len(prescribed_dose))]
-    paired_sorted = sorted(paired, key=lambda x: x[1], reverse=True)
-    cat_ptv = torch.stack([x[0] for x in paired_sorted])
-    prescribed_dose = [x[1] for x in paired_sorted]
-    
-    return comb_ptv, prescribed_dose, cat_ptv 
-
-def tr_augmentation(KEYS, in_size, out_size, crop_center):
-    return Compose([
-        SpatialCropd(keys = KEYS, roi_center = crop_center, roi_size = [int(in_size[0] * 1.2), int(in_size[1] * 1.2), int(in_size[2] * 1.2)], allow_missing_keys = True),
-        SpatialPadd(keys = KEYS, spatial_size = [int(in_size[0] * 1.2), int(in_size[1] * 1.2), int(in_size[2] * 1.2)], mode = 'constant', allow_missing_keys = True),
-        RandSpatialCropd(keys = KEYS, roi_size = [int(in_size[0] * 0.85), int(in_size[1] * 0.85), int(in_size[2] * 0.85)], max_roi_size = [int(in_size[0] * 1.2), int(in_size[1] * 1.2), int(in_size[2] * 1.2)], random_center = True, random_size = True, allow_missing_keys = True), 
-        RandRotated(keys = KEYS, prob=0.8, range_x= 1, range_y = 0.2, range_z = 0.2, allow_missing_keys = True),
-        RandFlipd(keys = KEYS, prob = 0.4, spatial_axis = 0, allow_missing_keys = True), 
-        RandFlipd(keys = KEYS, prob = 0.4, spatial_axis = 1, allow_missing_keys = True), 
-        RandFlipd(keys = KEYS, prob = 0.4, spatial_axis = 2, allow_missing_keys = True), 
-        Resized(keys = KEYS, spatial_size = out_size, allow_missing_keys = True), 
-    ])
-
-def tt_augmentation(KEYS, in_size, out_size, crop_center):
-    return Compose([
-        SpatialCropd(keys = KEYS, roi_center = crop_center, roi_size = in_size, allow_missing_keys = True),
-        SpatialPadd(keys = KEYS, spatial_size = in_size, mode = 'constant', allow_missing_keys = True),
-        Resized(keys = KEYS, spatial_size = out_size, allow_missing_keys = True), 
-        #ToTensord(keys = KEYS),
-    ])
 
 
 class MyDataset(Dataset):
@@ -162,16 +89,16 @@ class MyDataset(Dataset):
         In_dict = dict(data_npz)['arr_0'].item()
 
         In_dict['img'] = np.clip(In_dict['img'], self.cfig['down_HU'], self.cfig['up_HU']) / self.cfig['denom_norm_HU'] 
-        
-        ptv_highdose =  self.scale_dose_Dict[PatientID]['PTV_High']['PDose']
-        In_dict['dose'] = In_dict['dose'] * In_dict['dose_scale'] 
 
-        PTVHighOPT = self.scale_dose_Dict[PatientID]['PTV_High']['OPTName']
-
-        norm_scale = ptv_highdose / (np.percentile(In_dict['dose'][In_dict[PTVHighOPT].astype('bool')], 3) + 1e-5) # D97
-        In_dict['dose'] = In_dict['dose'] * norm_scale / self.cfig['dose_div_factor']
+        ori_img_size = In_dict['img'].shape
         
-        In_dict['dose'] = np.clip(In_dict['dose'], 0, ptv_highdose * 1.2)
+        if 'dose' in In_dict.keys():
+            ptv_highdose =  self.scale_dose_Dict[PatientID]['PTV_High']['PDose']
+            In_dict['dose'] = In_dict['dose'] * In_dict['dose_scale'] 
+            PTVHighOPT = self.scale_dose_Dict[PatientID]['PTV_High']['OPTName']
+            norm_scale = ptv_highdose / (np.percentile(In_dict['dose'][In_dict[PTVHighOPT].astype('bool')], 3) + 1e-5) # D97
+            In_dict['dose'] = In_dict['dose'] * norm_scale / self.cfig['dose_div_factor']
+            In_dict['dose'] = np.clip(In_dict['dose'], 0, ptv_highdose * 1.2)
 
 
         isocenter = In_dict['isocenter']
@@ -241,7 +168,7 @@ class MyDataset(Dataset):
                     dose_dict[self.scale_dose_Dict[PatientID][key]['OPTName']] = self.scale_dose_Dict[PatientID][key]['PDose'] / self.cfig['dose_div_factor']
                 
             
-        comb_optptv, prs_opt, cat_optptv  = combine_ptv(In_dict, opt_dose_dict)
+        comb_optptv, prs_opt, cat_optptv = combine_ptv(In_dict, opt_dose_dict)
         comb_ptv, _, cat_ptv  = combine_ptv(In_dict, dose_dict)
 
         
@@ -249,7 +176,9 @@ class MyDataset(Dataset):
         data_dict['angle_plate'] = In_dict['angle_plate']
         data_dict['beam_plate'] = In_dict['beam_plate']
 
-        data_dict['label'] = In_dict['dose'] * In_dict['Body'] 
+        if 'dose' in In_dict.keys():
+            data_dict['label'] = In_dict['dose'] * In_dict['Body'] 
+
         data_dict['prompt'] = torch.tensor([In_dict['isVMAT'], len(prs_opt), self.site_list[index], self.cohort_list[index]]).float()
         
         prompt_extend = data_dict['prompt'][None, :, None, None].repeat(1, self.cfig['out_size'][0] // 4, self.cfig['out_size'][1], self.cfig['out_size'][2])
@@ -279,6 +208,8 @@ class MyDataset(Dataset):
         del In_dict
 
         data_dict['id'] = ID
+        data_dict['ori_img_size'] = torch.tensor(ori_img_size)
+        data_dict['ori_isocenter'] = torch.tensor(isocenter)
 
         return data_dict
     
@@ -323,8 +254,8 @@ if __name__ == '__main__':
 
     for i, data in enumerate(train_loader):
 
-        
-        print (data['data'].shape, data['label'].shape, data['beam_plate'].shape, data['prompt'].shape)
+        pdb.set_trace()
+        print (data['data'].shape, data['label'].shape, data['beam_plate'].shape, data['prompt'].shape, data['ori_img_size'])
 
         
     
