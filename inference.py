@@ -61,10 +61,10 @@ def cropped2ori(crop_data, ori_size, isocenter, trans_in_size):
     crop_data: the cropped data
     ori_size: the original size of the data
     isocenter: the isocenter of the original data
+    trans_in_size: the in_size parameter in the transfromation of loader
     '''
 
     assert (np.array(trans_in_size) == np.array(crop_data.shape)).all()
-    pdb.set_trace()
 
     start_coords, end_coords = offset_spatial_crop(roi_center = isocenter, roi_size = trans_in_size)
 

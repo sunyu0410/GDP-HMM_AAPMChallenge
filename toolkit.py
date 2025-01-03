@@ -298,6 +298,10 @@ def save_screenshot(npz_dict, PTV_name, masked_by_body = True, index = None):
     return save_img
 
 def save_mhd(data, root_dir, filename, spacing=None, origin=None, direction=None ):
+    '''
+    save 3D data to mhd file. mhd file can be opened by itk-snap or some other tools
+    '''
+
     if not os.path.exists(root_dir):
         os.makedirs(root_dir)
     volume = sitk.GetImageFromArray(data)
@@ -315,6 +319,15 @@ def save_mhd(data, root_dir, filename, spacing=None, origin=None, direction=None
 #---------------------------------------------------------------------------------#
 
 def combine_oar(tmp_dict, need_list,norm_oar = True, OAR_DICT = None):
+
+    '''
+    this function is used to support the data loader. 
+
+    tmp_dict: the dictionary of the data loaded from the npz file
+    need_list: the list of the OARs needed to be combined
+    norm_oar: if True, the OARs will be normalized to the same scale
+    OAR_DICT: the dictionary of the OARs, the key is the name of the OAR, the value is the index of the OAR in the combined
+    '''
     
     comb_oar = torch.zeros(tmp_dict['img'].shape)  
     cat_oar = torch.zeros([32] + list(tmp_dict['img'].shape)[1:])

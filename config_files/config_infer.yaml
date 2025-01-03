@@ -35,7 +35,7 @@ act_sig: True
 scale_out: 7.5
 
 model_from_lightning: True
-save_model_path: ../pretrainmodel/GDP-HMM_Challenge/lightning/best_model-epoch=315-train_loss=0.1989.ckpt
+save_model_path: ../pretrainmodel/GDP-HMM_Challenge/lightning/best-train_loss=0.1841.ckpt
 save_pred_path: 'results/lightning'
 
 

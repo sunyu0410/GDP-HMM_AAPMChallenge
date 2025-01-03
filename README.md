@@ -13,7 +13,7 @@ The GDP-HMM repository provides code and tutorials designed to help participants
 - [Get Started and Training](#Get-Started-and-Training)
 - [Evaluation Methods](#Evaluation-Methods)
 - [Prizes and Publication Plan](#Prizes-and-Publication-Plan)
-- [Challenge organizers](#Challenge-organizers) 
+- [Challenge Organizers](#Challenge-organizers) 
 - [Citation](#Citation) 
 
 ## Announcements and News 
@@ -125,4 +125,6 @@ In addtion to above, if any data and code resources in this repo is helpful for 
 
 # Disclaimer
 
-The resources and information provided in this challenge are based on research results and for research purposes only. Future commercial availability cannot be guaranteed.
+The resources and information provided in this challenge are based on research results and for research purposes only. Future commercial availability cannot be guaranteed. 
+
+![log](figs/log.png)
