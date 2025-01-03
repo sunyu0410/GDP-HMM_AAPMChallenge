@@ -1,4 +1,6 @@
-# GDP-HMM_AAPMChallenge
+# GDP-HMM Challenge at AAPM 2025
+
+![](figs/ch_logo.png)
 
 The GDP-HMM repository provides code and tutorials designed to help participants get started with developing dose prediction models for the GDP-HMM Challenge at AAPM 2025. Additional information is available on the <a href="https://www.aapm.org/GrandChallenge/GDP-HMM/" _target='blank'>AAPM website</a> and the <a href="https://qtim-challenges.southcentralus.cloudapp.azure.com/competitions/38/" _target='blank'>challenge platform</a>.
 
@@ -126,5 +128,7 @@ In addtion to above, if any data and code resources in this repo is helpful for 
 # Disclaimer
 
 The resources and information provided in this challenge are based on research results and for research purposes only. Future commercial availability cannot be guaranteed. 
+
+#
 
 ![log](figs/log.png)
