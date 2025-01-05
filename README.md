@@ -56,7 +56,7 @@ For critical concerns, please email the lead organizer. Updates will be shared w
 ## Important Timeline
 
 - January, 2025: Phase I starts. Registration opens. Training dataset and GitHub are made available.
-- February 15, 2025: Phase II starts. Validation datasets are made available. Participants can submit preliminary results and receive feedback on relative scoring for unlimited number of times.
+- February, 2025: Phase II starts. Validation datasets are made available. Participants can submit preliminary results and receive feedback on relative scoring for limited number of times.
 - April 25, 2025: Phase III starts. Final test datasets are made available.
 - May 13, 2025: Deadline for testing phase.  
 
