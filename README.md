@@ -45,11 +45,11 @@ For any questions related to above, welcome to open issues.
 
 To ensure this repository remains focused on the challenge and to maintain fairness for all participants, we discourage opening issues related to the following topics: 
 
-*Urgent matters* - For time-sensitive issues like data access problems or data issues, email the lead organizer directly.
+- *Urgent matters* - For time-sensitive issues like data access problems or data issues, email the lead organizer directly.
 
-*AI Engineering tricks* - We plan not to provide AI implementation suggestions for the challenge.
+- *AI Engineering tricks* - We plan not to provide AI implementation suggestions for the challenge.
 
-*AI Technical paper questions* - We plan not to address AI methodology questions in the issues. but welcome any questions related to clinical background and data/task understanding.
+- *AI Technical paper questions* - We plan not to address AI methodology questions in the issues. but welcome any questions related to clinical background and data/task understanding.
 
 For critical concerns, please email the lead organizer. Updates will be shared with all participants as needed.
 
