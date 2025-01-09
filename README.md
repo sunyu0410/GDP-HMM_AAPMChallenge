@@ -20,7 +20,9 @@ This repository provides code and tutorials designed to help participants get st
 
 ## Announcements and News 
 
-:warning: **Announcement.** The maximum allowed inference time for the deep learning module (excluding data preprocessing) is 3 seconds on a GPU with up to 24 GB of memory. To align with the challenge's objectives, participants must develop **a generalizable model** rather than creating separate models tailored to specific contexts. See detail explanation in [get_started_and_train.ipynb](get_started_and_train.ipynb) notebook. 
+:warning: **Attention!** The maximum allowed inference time for the deep learning module (excluding data preprocessing) is 3 seconds on a GPU with up to 24 GB of memory. To align with the challenge's objectives, participants must develop **a generalizable model** rather than creating separate models tailored to specific contexts. See detail explanation in [get_started_and_train.ipynb](get_started_and_train.ipynb) notebook. 
+
+:rocket: [01/2025] Sanity check submission is open in challenge platform. See tutorial at [evaluation.ipynb](evaluation.ipynb) and Forum. 
 
 :rocket: [01/2025] The challenge is officially started; training data and pretrained simple baseline are released; see links at [get_started_and_train.ipynb](get_started_and_train.ipynb)! 
 
