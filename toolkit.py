@@ -1,6 +1,6 @@
 '''
 This script is adapted from the toolkit of below CVPR paper. 
-If you find the functions in this script are helpful to you (for the challenge and beyond), please kindly cite the original pape: 
+If you find the functions in this script are helpful to you (for the challenge and beyond), please kindly cite the original paper: 
 
 Riqiang Gao, Bin Lou, Zhoubing Xu, Dorin Comaniciu, and Ali Kamen. 
 "Flexible-cm gan: Towards precise 3d dose prediction in radiotherapy." 

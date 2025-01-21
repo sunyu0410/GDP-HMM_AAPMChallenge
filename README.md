@@ -1,6 +1,6 @@
 # GDP-HMM Challenge at AAPM 2025
 
-![](figs/ch_logo.png)
+![](figs/ch_logov2.png)
 
 This repository provides code and tutorials designed to help participants get started with developing dose prediction models for the GDP-HMM Challenge at AAPM 2025. Additional information is available on the <a href="https://www.aapm.org/GrandChallenge/GDP-HMM/" _target='blank'>AAPM website</a> and the <a href="https://qtim-challenges.southcentralus.cloudapp.azure.com/competitions/38/" _target='blank'>challenge platform</a>. 
 
@@ -21,6 +21,10 @@ This repository provides code and tutorials designed to help participants get st
 ## Announcements and News 
 
 :warning: **Attention!** The maximum allowed inference time for the deep learning module (excluding data preprocessing) is 3 seconds on a GPU with up to 24 GB of memory. To align with the challenge's objectives, participants must develop **a generalizable model** rather than creating separate models tailored to specific contexts. See detail explanation in [get_started_and_train.ipynb](get_started_and_train.ipynb) notebook. 
+
+:rocket: [01/21/2025] Input data of <a href="https://huggingface.co/datasets/Jungle15/GDP-HMM_Challenge" _target='blank'>validation set</a> are released; rings structures of original train data is updated to match the validation set (the previous version mask ring structures are filled). 
+
+ :rocket: [01/21/2025] <a href="https://huggingface.co/datasets/Jungle15/Radiotherapy_HaN_Lung_AIRTP" _target='blank'>DICOMs</a> of the data are released (not necessary for this challenge, but helpful for other research topics in radiotherapy).  
 
 :rocket: [01/2025] Sanity check submission is open in challenge platform. See tutorial at [evaluation.ipynb](evaluation.ipynb) and Forum. 
 
@@ -91,9 +95,9 @@ Example code is provided in [evaluation.ipynb](evaluation.ipynb).
 
 ## Prizes and Publication Plan
 
-- **Monetary Awards:** A total $4,000 for top five teams (sponorship is pending for approval). 
-- **Certificate:** Top five teams will receive certificate endorsed organization team and AAPM.
-- **Authorship:** Top five teams (up to two members per team) will be invited as co-authors on a journal manuscript summarizing the challenge. Additional team members will be acknowledged.
+- **Monetary Awards:** Total $4,000 for top **N** teams (the number **N** will range from 5 to 10, depending on the number of teams participating in Phase III).
+- **Certificate:** Top **N** teams will receive certificate endorsed organization team and AAPM.
+- **Authorship:** Top **N** teams (up to two members per team) will be invited as co-authors on a journal manuscript summarizing the challenge. Additional team members will be acknowledged.
 - **Presentations:** Top two teams will be awarded complimentary meeting registration to present their work.
 - **Internship Opportunities**: Lead students of Top five teams will receive priority consideration for internships at Siemens Healthineers AI Center.
 
