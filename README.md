@@ -1,6 +1,9 @@
 # GDP-HMM Challenge at AAPM 2025
 
-![](figs/ch_logov2.png)
+<p align="center">
+  <img src='figs/ch_logov2.png' width="300px"/>
+</p>
+
 
 This repository provides code and tutorials designed to help participants get started with developing dose prediction models for the GDP-HMM Challenge at AAPM 2025. Additional information is available on the <a href="https://www.aapm.org/GrandChallenge/GDP-HMM/" _target='blank'>AAPM website</a> and the <a href="https://qtim-challenges.southcentralus.cloudapp.azure.com/competitions/38/" _target='blank'>challenge platform</a>. 
 
@@ -22,7 +25,7 @@ This repository provides code and tutorials designed to help participants get st
 
 :warning: **Attention!** The maximum allowed inference time for the deep learning module (excluding data preprocessing) is 3 seconds on a GPU with up to 24 GB of memory. To align with the challenge's objectives, participants must develop **a generalizable model** rather than creating separate models tailored to specific contexts. See detail explanation in [get_started_and_train.ipynb](get_started_and_train.ipynb) notebook. 
 
-:rocket: [01/21/2025] Input data of <a href="https://huggingface.co/datasets/Jungle15/GDP-HMM_Challenge" _target='blank'>validation set</a> are released; rings structures of original train data is updated to match the validation set (the previous version mask ring structures are filled). 
+:rocket: [01/21/2025] Input data of <a href="https://huggingface.co/datasets/Jungle15/GDP-HMM_Challenge" _target='blank'>validation set</a> have been released; rings structures of previous train_XX.zip have been updated to match the validation set. 
 
  :rocket: [01/21/2025] <a href="https://huggingface.co/datasets/Jungle15/Radiotherapy_HaN_Lung_AIRTP" _target='blank'>DICOMs</a> of the data are released (not necessary for this challenge, but helpful for other research topics in radiotherapy).  
 
@@ -45,7 +48,6 @@ This repository provides code and tutorials designed to help participants get st
 - *Evaluation Methods*. We provide code or/and details of evaluation metrics with Jupyter notebook. 
 
 For any questions related to above, welcome to open issues. 
-
 
 ## What this repo does NOT
 
@@ -125,7 +127,7 @@ To acknowledge the work of challenge organization team and insights from previou
 In addtion to above, if any data and code resources in this repo is helpful for your research, please kindly cite [1] or/and [2]. Please kindly cite external linked resources accordingly if they helped you. 
 
 ```
-[1] Riqiang Gao, Mamadou Diallo, Han Liu, Anthony Magliari, Wilko Verbakel, Sandra Meyers, Masoud Zarepisheh, Rafe Mcbeth, Simon Arberet, Martin Kraus, Florin Ghesu, Ali Kamen. Automating High Quality RT Planning at Scale. Technique Note, 2025 (to be public soon).
+[1] Riqiang Gao, Mamadou Diallo, Han Liu, Anthony Magliari, Wilko Verbakel, Sandra Meyers, Masoud Zarepisheh, Rafe Mcbeth, Simon Arberet, Martin Kraus, Florin Ghesu, Ali Kamen. Automating High Quality RT Planning at Scale. arXiv preprint arXiv:2501.11803. 2025.
 
 [2] Riqiang Gao, Bin Lou, Zhoubing Xu, Dorin Comaniciu, and Ali Kamen. "Flexible-cm gan: Towards precise 3d dose prediction in radiotherapy." In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2023.
 
