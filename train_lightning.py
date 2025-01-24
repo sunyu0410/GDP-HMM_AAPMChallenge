@@ -50,6 +50,16 @@ class GDPLightningModel(pl.LightningModule):
             os.system('nvidia-smi')
 
         return loss
+    
+    def validation_step(self, batch, batch_idx):
+        inputs, labels = batch['data'], batch['label']
+        outputs = self.model(inputs) 
+        if self.cfig['act_sig']:
+            outputs = self.sig_act(outputs.clone())
+
+        loss = self.criterion(outputs * self.cfig['scale_out'], labels) * self.cfig['scale_loss']
+        self.log('val_loss', loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
+        return loss
 
     def configure_optimizers(self):
         optimizer = optim.Adam([{'params': self.model.parameters(), 'initial_lr': self.lr}], lr=self.lr)
@@ -88,10 +98,11 @@ if __name__ == "__main__":
     lr_monitor = LearningRateMonitor(logging_interval='step')
     checkpoint_callback = ModelCheckpoint(
         dirpath=cfig['save_model_root'],
-        filename='best_model-{epoch:02d}-{train_loss:.4f}',
-        save_top_k=1,
-        monitor='train_loss',
-        mode='min'
+        filename='best_model-{epoch:02d}-{val_loss:.4f}',
+        save_top_k=2,
+        monitor='val_loss',
+        mode='min', 
+        save_last=True
     )
 
     mylogger = CSVLogger(cfig['save_model_root'])

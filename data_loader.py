@@ -63,7 +63,8 @@ class MyDataset(Dataset):
         
         df = pd.read_csv(cfig['csv_root'])
         
-        df = df.loc[df['phase'] == phase]
+        # df = df.loc[df['phase'] == phase]
+        df = df.loc[df['dev_split'] == phase]
 
         self.phase = phase
         self.data_list = df['npz_path'].tolist()
@@ -83,7 +84,7 @@ class MyDataset(Dataset):
 
         if len(str(PatientID)) < 3:
             PatientID = f"{PatientID:0>3}"
-
+        
         data_npz = np.load(data_path, allow_pickle=True)
 
         In_dict = dict(data_npz)['arr_0'].item()
@@ -233,9 +234,9 @@ class GetLoader(object):
 if __name__ == '__main__':
 
     cfig = {
-            'train_bs': 8,
+            'train_bs': 2,
              'val_bs': 2, 
-             'num_workers': 8, 
+             'num_workers': 2, 
              'csv_root': 'meta_files/meta_data.csv',
              'scale_dose_dict': 'meta_files/PTV_DICT.json',
              'pat_obj_dict': 'meta_files/Pat_Obj_DICT.json',

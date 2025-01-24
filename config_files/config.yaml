@@ -7,7 +7,7 @@ loader_params:
     'csv_root': 'meta_files/meta_data.csv'
     'scale_dose_dict': 'meta_files/PTV_DICT.json'
     'pat_obj_dict': 'meta_files/Pat_Obj_DICT.json'
-    'num_workers': 8
+    'num_workers': 4
 
     'down_HU': -1000
     'up_HU': 1000
