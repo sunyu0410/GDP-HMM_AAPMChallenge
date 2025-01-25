@@ -6,6 +6,8 @@ Riqiang Gao, Bin Lou, Zhoubing Xu, Dorin Comaniciu, and Ali Kamen.
 "Flexible-cm gan: Towards precise 3d dose prediction in radiotherapy." 
 In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2023.
 
+Disclaimer: This is for research purpose only. This is not part of the any existing Siemens Healthineers product.
+
 '''
 
 import numpy as np
