@@ -4,7 +4,7 @@ loader_params:
 
     'train_bs': 1
     'val_bs': 1
-    'csv_root': 'meta_files/meta_data_infer.csv'
+    'csv_root': 'meta_files/meta_data_infer2.csv'
     'scale_dose_dict': 'meta_files/PTV_DICT.json'
     'pat_obj_dict': 'meta_files/Pat_Obj_DICT.json'
     'num_workers': 2
@@ -35,8 +35,8 @@ act_sig: True
 scale_out: 7.5
 
 model_from_lightning: True
-save_model_path: ../pretrainmodel/GDP-HMM_Challenge/lightning/best-train_loss=0.1841.ckpt
-save_pred_path: 'results/lightning'
+save_model_path: ../pretrainmodel/GDP-HMM_Challenge/lightning/best_model-epoch=270-val_loss=0.2323.ckpt
+save_pred_path: '../pretrainmodel/GDP-HMM_Challenge/lightning/results'
 
 
 # model_from_lightning: False

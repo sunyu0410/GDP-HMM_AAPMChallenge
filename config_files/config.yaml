@@ -40,4 +40,7 @@ scale_out: 7.5
 scale_loss: 4
 
 #save_model_root: ../pretrainmodel/GDP-HMM_Challenge
+
+pretrain_ckpt: ../pretrainmodel/GDP-HMM_Challenge/lightning/last.ckpt
+
 save_model_root: ../pretrainmodel/GDP-HMM_Challenge/lightning

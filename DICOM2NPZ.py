@@ -298,8 +298,9 @@ def spatial_crop_dict(data_dict, z_len_mm = 224, ref_ptv = 'PTV_Total'):
 
 
 if __name__ == "__main__": 
+
     '''
-    the sample patient should download from the HuggingFace repo: https://huggingface.co/datasets/Jungle15/Radiotherapy_HaN_Lung_AIRTP. 
+    The sample patient should be downloaded from the HuggingFace repo: https://huggingface.co/datasets/Jungle15/Radiotherapy_HaN_Lung_AIRTP. 
     '''
 
     sess_path = '/pct_ids/users/z004b27b/data/GDP-HMM_Challenge/DICOM_huggingface/sample_patient/CT'

@@ -119,4 +119,4 @@ if __name__ == "__main__":
     )
 
     # Training
-    trainer.fit(model, train_loader, val_loader)
+    trainer.fit(model, train_loader, val_loader, ckpt_path = cfig['pretrain_ckpt'])
