@@ -66,6 +66,10 @@ class MyDataset(Dataset):
         # df = df.loc[df['phase'] == phase]
         df = df.loc[df['dev_split'] == phase]
 
+        # for debug 
+        df = df.loc[df['site'] == 1]
+        df = df.loc[df['isVMAT'] == True]
+
         self.phase = phase
         self.data_list = df['npz_path'].tolist()
         self.site_list = df['site'].tolist()
