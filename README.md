@@ -26,6 +26,8 @@ This repository provides code and tutorials designed to help participants get st
 
 :warning: **Attention!** The maximum allowed inference time for the deep learning module (excluding data preprocessing) is 3 seconds on a GPU with up to 24 GB of memory. To align with the challenge's objectives, participants must develop **a generalizable model** rather than creating separate models tailored to specific contexts. See detail explanation in [get_started_and_train.ipynb](get_started_and_train.ipynb) notebook. 
 
+:rocket: [02/15/2025] The Phase II is open for submission. See tutorial at [evaluation.ipynb](evaluation.ipynb) and Forum. 
+
 :rocket: [01/21/2025] Input data of <a href="https://huggingface.co/datasets/Jungle15/GDP-HMM_Challenge" _target='blank'>validation set</a> have been released; rings structures of previous train_XX.zip have been updated to match the validation set. 
 
  :rocket: [01/21/2025] <a href="https://huggingface.co/datasets/Jungle15/Radiotherapy_HaN_Lung_AIRTP" _target='blank'>DICOMs</a> of the data are released (not necessary for this challenge, but helpful for other research topics in radiotherapy).  

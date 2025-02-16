@@ -133,8 +133,6 @@ if __name__ == "__main__":
             if 'label' in data_dict.keys():
                 print ('L1 error is ', torch.nn.L1Loss()(outputs, data_dict['label'].to(device)).item())
             
-
-
             if cfig['loader_params']['in_size'] != cfig['loader_params']['out_size']:
                 outputs = torch.nn.functional.interpolate(outputs, size = cfig['loader_params']['in_size'], mode = 'area')
 

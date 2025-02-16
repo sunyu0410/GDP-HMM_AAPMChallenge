@@ -42,4 +42,4 @@ scale_loss: 4
 
 pretrain_ckpt: #../pretrainmodel/GDP-HMM_Challenge/lightning/last.ckpt
 
-save_model_root: ../pretrainmodel/GDP-HMM_Challenge/lightning_hanvmat
+save_model_root: ../pretrainmodel/GDP-HMM_Challenge/lightning
