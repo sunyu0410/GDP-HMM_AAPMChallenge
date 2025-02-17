@@ -28,6 +28,8 @@ This repository provides code and tutorials designed to help participants get st
 
 :rocket: [02/15/2025] The Phase II is open for submission. See tutorial at [evaluation.ipynb](evaluation.ipynb) and Forum. 
 
+:rocket: [02/11/2025] Docker tutorial/example is included, please check it at [docker_tutorial.ipynb](docker_tutorial.ipynb). The docker will be needed in the final phase (Phase III). 
+
 :rocket: [01/21/2025] Input data of <a href="https://huggingface.co/datasets/Jungle15/GDP-HMM_Challenge" _target='blank'>validation set</a> have been released; rings structures of previous train_XX.zip have been updated to match the validation set. 
 
  :rocket: [01/21/2025] <a href="https://huggingface.co/datasets/Jungle15/Radiotherapy_HaN_Lung_AIRTP" _target='blank'>DICOMs</a> of the data are released (not necessary for this challenge, but helpful for other research topics in radiotherapy).  
