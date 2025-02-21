@@ -146,7 +146,7 @@ class MyDataset(Dataset):
 
         In_dict = self.aug(In_dict)
 
-        if self.site_list[index] > 1.5:
+        if self.site_list[index] < 1.5: # different before 25/02/21
             OAR_LIST = HaN_OAR_LIST
             OAR_DICT = HaN_OAR_DICT
         else:
@@ -161,7 +161,7 @@ class MyDataset(Dataset):
             need_list = OAR_LIST
             print (ID.split('+')[0],  '-------------not in the pat_obj_dict')
         comb_oar, cat_oar  = combine_oar(In_dict, need_list, self.cfig['norm_oar'], OAR_DICT)
-
+        
         opt_dose_dict = {}
         dose_dict = {}
         for key in self.scale_dose_Dict[PatientID].keys():
@@ -240,7 +240,7 @@ if __name__ == '__main__':
     cfig = {
             'train_bs': 2,
              'val_bs': 2, 
-             'num_workers': 2, 
+             'num_workers': 0, 
              'csv_root': 'meta_files/meta_data.csv',
              'scale_dose_dict': 'meta_files/PTV_DICT.json',
              'pat_obj_dict': 'meta_files/Pat_Obj_DICT.json',

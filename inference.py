@@ -123,6 +123,7 @@ if __name__ == "__main__":
         model.eval()
         for batch_idx, data_dict in enumerate(test_loader):
             # Forward pass
+            
             outputs = model(data_dict['data'].to(device)) 
 
             if cfig['act_sig']:
