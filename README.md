@@ -6,7 +6,7 @@
 
 This repository provides code and tutorials designed to help participants get started with developing dose prediction models for the GDP-HMM Challenge at AAPM 2025. 
 
-[<a href="https://www.aapm.org/GrandChallenge/GDP-HMM/" _target='blank'>AAPM website</a>] [<a href="https://qtim-challenges.southcentralus.cloudapp.azure.com/competitions/38/" _target='blank'>challenge platform</a>] [<a href="https://huggingface.co/datasets/Jungle15/GDP-HMM_Challenge" _target='blank'>Data (npz)</a>] [<a href="https://huggingface.co/datasets/Jungle15/Radiotherapy_HaN_Lung_AIRTP" _target='blank'>DICOM Data (optional for challenge)</a>] [<a href="https://huggingface.co/datasets/Jungle15/Radiotherapy_HaN_Lung_AIRTP" _target='blank'>Pre-Trained Baseline</a>] [<a href="https://arxiv.org/abs/2501.11803" _target='blank'>Arxiv</a>]
+[<a href="https://www.aapm.org/GrandChallenge/GDP-HMM/" _target='blank'>AAPM website</a>] [<a href="https://qtim-challenges.southcentralus.cloudapp.azure.com/competitions/38/" _target='blank'>challenge platform</a>] [<a href="https://huggingface.co/datasets/Jungle15/GDP-HMM_Challenge" _target='blank'>Data (npz)</a>] [<a href="https://huggingface.co/datasets/Jungle15/Radiotherapy_HaN_Lung_AIRTP" _target='blank'>DICOM Data (optional for challenge)</a>] [<a href="https://huggingface.co/Jungle15/GDP-HMM_baseline" _target='blank'>Pre-Trained Baseline</a>] [<a href="https://arxiv.org/abs/2501.11803" _target='blank'>Arxiv</a>]
 
 # Content 
 
