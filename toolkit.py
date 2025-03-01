@@ -265,6 +265,69 @@ def NormalizeImg(imgVol, maskVol = None):
     imgVol_norm = np.uint8(imgVol_norm * 255)
     return imgVol_norm
 
+def NPZ2DVH_2Dose(roi_dict, needed_mask, additional_dose, ref_ptv_name = None, ref_dose = 70, bin_size = 4, with_plt = True, save_plt_path = None):
+    '''
+    Similar to NPZ2DVH, but plot the additional dose on the same figure
+    '''
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf',
+              '#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5', '#c49c94',
+                '#f7b6d2', '#c7c7c7', '#dbdb8d', '#9edae5', '#393b79', '#637939',
+                '#8c6d31', '#843c39', '#7b4173', '#5254a3', '#6b6ecf', '#b5cf6b',
+                '#e7ba52', '#d6616b', '#ce6dbd', '#de9ed6', '#ad494a', '#8ca252',
+                '#e7969c', '#bd9e39', '#17becf', '#bdbdbd', '#c7e9c0', '#fdbe85']
+
+
+    if roi_dict['dose'].max() > 200:
+        dose_arr = roi_dict['dose'] * roi_dict['dose_scale'] 
+    else:
+        dose_arr = roi_dict['dose']
+    
+    if dose_arr.max() < 10:
+        dose_arr = 80 / dose_arr.max()  * dose_arr
+
+    if ref_ptv_name is not None:
+        ptv = roi_dict[ref_ptv_name]
+
+        scale = ref_dose / np.percentile(dose_arr[ptv > 0.5], 3) 
+    
+        dose_arr = dose_arr * scale
+
+    dvh_dict = {}
+
+    cnt = 0
+
+    for key in needed_mask:
+        if roi_dict[key].max() == 0:
+            continue
+    
+        bin_edges_dose, DVH_dose = getDVH(dose_arr, roi_dict[key], binsize= bin_size, dmax=None)
+        #dvh_dict[key]  = {'dose': bin_edges_dose.tolist(), 'dvh': DVH_dose.tolist()}
+
+        bin_edges_add_dose, DVH_add_dose = getDVH(additional_dose, roi_dict[key], binsize= bin_size, dmax=None)
+        #dvh_dict[key]  = {'add_dose': bin_edges_add_dose.tolist(), 'dvh': dvh_dict.tolist()}
+        
+        if with_plt:
+            plt.plot(bin_edges_dose, DVH_dose,  label=key, color = colors[cnt],  linewidth=2)
+            plt.plot(bin_edges_add_dose, DVH_add_dose,  label=key + '*', linestyle='--', color = colors[cnt],  linewidth=2)
+
+        cnt += 1
+
+    if with_plt:
+        plt.xlabel('Dose (Gy)')
+        plt.ylabel('Volume (%)')  
+        if cnt > 10:
+            plt.legend(bbox_to_anchor=(1.01, 1.01), ncol=2)
+            print ('two columns')
+        else:
+            plt.legend(bbox_to_anchor=(1.01, 1.01))
+        
+        
+        if save_plt_path is not None:
+            plt.savefig(save_plt_path, bbox_inches='tight')
+            plt.close()
+    return dvh_dict
+
+
 def save_screenshot(npz_dict, PTV_name, masked_by_body = True, index = None): 
     
     '''
