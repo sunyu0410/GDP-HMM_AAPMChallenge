@@ -1783,7 +1783,7 @@ HN_P033,S2A4Ac,True,5,1,valid,test,/pct_ids/users/z004b27b/data/GDP-HMM_Challeng
 0617-519004,2Ac,True,1,2,train,train,/pct_ids/users/z004b27b/data/GDP-HMM_Challenge/Lung/train/0617-519004+2Ac+MOS_11507.npz,1.033,1.055,1,60.0
 0617-519004,imrt,False,1,2,train,train,/pct_ids/users/z004b27b/data/GDP-HMM_Challenge/Lung/train/0617-519004+imrt+MOS_11507.npz,1.034,1.053,1,60.0
 0617-520526,2Ac,True,1,2,valid,test,/pct_ids/users/z004b27b/data/GDP-HMM_Challenge/Lung/valid/0617-520526+2Ac+MOS_17136.npz,,,1,60.0
-0617-520526,imrt,False,1,2,valid,test,/pct_ids/users/z004b27b/data/GDP-HMM_Challenge/Lung/valid/0617-520526+imrt+MOS_17136.npz,,,1,60.0
+0617-520526,imrt,False,1,2,valid,test,/pct_ids/users/z004b27b/data/GDP-HMM_Challenge/Lung/valid/0617-520526+imrt+MOS_17136.npz,,,1,60.0 
 0617-520664,2Ac,True,1,2,train,train,/pct_ids/users/z004b27b/data/GDP-HMM_Challenge/Lung/train/0617-520664+2Ac+MOS_43563.npz,1.026,1.046,1,60.0
 0617-520664,imrt,False,1,2,train,train,/pct_ids/users/z004b27b/data/GDP-HMM_Challenge/Lung/train/0617-520664+imrt+MOS_43563.npz,1.021,1.031,1,60.0
 0617-520739,2Ac,True,1,2,train,train,/pct_ids/users/z004b27b/data/GDP-HMM_Challenge/Lung/train/0617-520739+2Ac+MOS_37643.npz,1.043,1.066,1,60.0
