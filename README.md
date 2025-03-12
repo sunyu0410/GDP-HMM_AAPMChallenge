@@ -26,6 +26,8 @@ This repository provides code and tutorials designed to help participants get st
 
 :warning: **Attention!** The maximum allowed inference time for the deep learning module (excluding data preprocessing) is 3 seconds on a GPU with up to 24 GB of memory. To align with the challenge's objectives, participants must develop **a generalizable model** rather than creating separate models tailored to specific contexts. See detail explanation in [get_started_and_train.ipynb](get_started_and_train.ipynb) notebook. 
 
+:rocket: [03/11/2025] We updated the <a href="https://arxiv.org/abs/2501.11803" _target='blank'>Arxiv</a> to include some analyses about the simple baseline; timeline for testing is adjusted a bit. 
+
 :rocket: [02/15/2025] The Phase II is open for submission. See tutorial at [evaluation.ipynb](evaluation.ipynb) and Forum. 
 
 :rocket: [02/11/2025] Docker tutorial/example is included, please check it at [docker_tutorial.ipynb](docker_tutorial.ipynb). The docker will be needed in the final phase (Phase III). 
@@ -70,8 +72,8 @@ For critical concerns, please email the lead organizer. Updates will be shared w
 
 - January, 2025: Phase I starts. Registration opens. Training dataset and GitHub are made available.
 - February, 2025: Phase II starts. Validation datasets are made available. Participants can submit preliminary results and receive feedback on relative scoring for limited number of times.
-- April 25, 2025: Phase III starts. Final test datasets are made available.
-- May 13, 2025: Deadline for testing phase.  
+- April 20, 2025: Phase III starts. Final test datasets are made available.
+- May 02, 2025: Deadline for testing phase.  
 
 ## Simplified Background
 
