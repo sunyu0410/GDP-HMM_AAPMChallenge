@@ -7,6 +7,8 @@ If you find the functions in this script are helpful to you (for the challenge a
 Riqiang Gao, Bin Lou, Zhoubing Xu, Dorin Comaniciu, and Ali Kamen. 
 "Flexible-cm gan: Towards precise 3d dose prediction in radiotherapy." 
 In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2023.
+
+In addition, we suggestion the participants investigate the parameters / image-operations carefully. The organizer is only supposed to provide something to start with, but not necessarily optimized for this challenge data.
 '''
 
 from torch.utils.data import Dataset, DataLoader

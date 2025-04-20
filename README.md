@@ -8,8 +8,6 @@
 
 This repository provides code and tutorials to help participants get started with developing dose prediction models for the GDP-HMM Challenge at AAPM 2025. 
 
-
-
 # Content 
 
 - [Announcements and News](#Announcements-and-News)
@@ -27,6 +25,8 @@ This repository provides code and tutorials to help participants get started wit
 ## Announcements and News 
 
 :warning: **Attention!** The maximum allowed inference time for the deep learning module (excluding data preprocessing) is 3 seconds on a GPU with up to 24 GB of memory. To align with the challenge's objectives, participants must develop **a generalizable model** rather than creating separate models tailored to specific contexts. See detail explanation in [get_started_and_train.ipynb](get_started_and_train.ipynb) notebook. 
+
+:rocket: [04/20/2025] The final test phase is started. Please check the [docker_tutorial.ipynb](docker_tutorial.ipynb) to prepare docker, which need to be submitted through challenge platform. Participants also are required to provide documentation of their methods (up to 2 pages), source code for training and testing, and pre-trained model; which could be zip file or accessible web link.  
 
 :rocket: [03/11/2025] We updated the <a href="https://arxiv.org/abs/2501.11803" _target='blank'>Arxiv</a> to include some analyses about the simple baseline; timeline for testing is adjusted a bit. 
 
