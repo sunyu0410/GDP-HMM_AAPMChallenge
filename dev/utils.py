@@ -50,11 +50,12 @@ Section 3: for pytorch data loader
 def PlotGantry(bg_img, angles, x, y, length, width = 4):
 
     angles = [angle - 90 for angle in angles]
-    
     points = [(int(x + length * np.cos(np.pi / 180 * float(angle))), int(y + length * np.sin(np.pi / 180 * float(angle)))) for angle in angles]
+
+    out = bg_img.copy()
     for point in points:
-        cv2.line(bg_img, point, (x, y), (1), width)
-    return bg_img
+        cv2.line(out, point, (x, y), (1), width)
+    return out
 
 def interpolate_point_on_line(x1, y1, z1, x2, y2, z2, y_c):
     """
