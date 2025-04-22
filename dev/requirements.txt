@@ -1,0 +1,5 @@
+scikit-image
+opencv-python-headless
+SimpleITK
+EasyDict
+torchvision
