@@ -56,15 +56,36 @@ def get_tfm(keys, in_size, out_size, crop_center):
 
 
 class Data(Dataset):
-    def __init__(self, meta_csv_path, ptv_json_path, str_json_path, dose_div=10, out_size=None):
+    def __init__(self, meta_csv_path, ptv_json_path, str_json_path, phase, dev_split, dose_div=10, out_size=None):
         super().__init__()
         self.dose_div = dose_div
         if out_size is None: self.out_size = [96, 128, 144]
-        self.meta_info = pd.read_csv(meta_csv_path)
+        self.meta_info_all = pd.read_csv(meta_csv_path)
         self.ptv_info = json.load(open(ptv_json_path))
         self.str_info = json.load(open(str_json_path))
 
+        meta_mask = np.logical_and(
+            self.meta_info_all.phase==phase, 
+            self.meta_info_all.dev_split==dev_split
+        )
+        if meta_mask.sum().item() == 0: raise Exception('Invalid phase / dev_split combination')
+        self.meta_info = self.meta_info_all[meta_mask]
+        self.fl = self.meta_info.npz_path.tolist()
+
+    def __len__(self):
+        return len(self.fl)
+    
+    def get(self, idx):
+        return self.prepare_data(self.fl[idx])
+
+    def __getitem__(self, idx):
+        # data: ct, dose, beam_plate, ptv_h, ptv_m, ptv_l, oar_comb
+        data, info = self.get(idx)
+
+        return data
+
     def prepare_data(self, filepath):
+        filepath = Path(filepath)
         _id = filepath.name.split('.')[0]
         pat_id = _id.split('+')[0]
 
@@ -122,6 +143,7 @@ class Data(Dataset):
         )
 
         return data, info
+
 
 if __name__ == "__main__":
     
