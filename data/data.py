@@ -5,29 +5,12 @@ import json
 from pathlib import Path
 from monai.transforms import Compose, Resized, SpatialPadd, SpatialCropd
 import torch
+from torch.utils.data import Dataset
 
 HaN_OAR_LIST = [ 'Cochlea_L', 'Cochlea_R','Eyes', 'Lens_L', 'Lens_R', 'OpticNerve_L', 'OpticNerve_R', 'Chiasim', 'LacrimalGlands', 'BrachialPlexus', 'Brain',  'BrainStem_03',  'Esophagus', 'Lips', 'Lungs', 'Trachea', 'Posterior_Neck', 'Shoulders', 'Larynx-PTV', 'Mandible-PTV', 'OCavity-PTV', 'ParotidCon-PTV', 'Parotidlps-PTV', 'Parotids-PTV', 'PharConst-PTV', 'Submand-PTV', 'SubmandL-PTV', 'SubmandR-PTV', 'Thyroid-PTV', 'SpinalCord_05']
 HaN_OAR_DICT = {HaN_OAR_LIST[i]: (i+1) for i in range(len(HaN_OAR_LIST))}
 Lung_OAR_LIST = ["PTV_Ring.3-2", "Total Lung-GTV", "SpinalCord",  "Heart",  "LAD", "Esophagus",  "BrachialPlexus",  "GreatVessels", "Trachea", "Body_Ring0-3"]
 Lung_OAR_DICT = {Lung_OAR_LIST[i]: (i+10) for i in range(len(Lung_OAR_LIST))}
-
-meta_info = pd.read_csv('/workspaces/GDP-HMM_AAPMChallenge/data/meta_data.csv')
-ptv_info = json.load(open('/workspaces/GDP-HMM_AAPMChallenge/data/PTV_DICT.json'))
-str_info = json.load(open('/workspaces/GDP-HMM_AAPMChallenge/data/Pat_Obj_DICT.json'))
-
-dose_div = 10
-ct_down, ct_up, ct_denom = -1000, 1000, 500
-out_size = [ 96, 128, 144]
-
-filepath = Path('/workspaces/GDP-HMM_AAPMChallenge/data/0617-259694+imrt+MOS_33896.npz')
-_id = filepath.name.split('.')[0]
-pat_id = _id.split('+')[0]
-
-npz = np.load(filepath, allow_pickle=True)
-d = EasyDict(npz['arr_0'].item())
-
-# d.keys()
-# ['50per_Ring1.5-5', 'Body', 'Body_Ring0-3', 'BrachialPlexus', 'CTV', 'Esophagus', 'GTV', 'GreatVessels', 'Heart', 'LAD', 'Lung_Cntr', 'Lung_Ipsi', 'Lung_Total', 'PTV', 'PTV_Ring.3-2', 'SpinalCord', 'SpinalCord_05', 'Total Lung-GTV', 'Trachea', 'all_mask', 'img', 'dose', 'dose_scale', 'isVMAT', 'isocenter', 'angle_list', 'origin', 'spacing', 'direction', 'size', 'angle_plate', 'beam_plate']
 
 def process_dose(d, pt_ptv_info, dose_div=10):
     ptv_h, ptv_h_str = pt_ptv_info['PTV_High']['PDose'], pt_ptv_info['PTV_High']['OPTName']
@@ -64,28 +47,6 @@ def parse_ptv_info(info, d, dose_div):
 
     return out, arrs
 
-
-dose = process_dose(d, ptv_info[pat_id], dose_div)
-ct = process_ct(d.img)
-
-isocenter = d.isocenter
-
-# Use filepath to match with the meta index
-meta_idx = [i for i,v in enumerate(meta_info.npz_path.str.split('/')) if v[-1]==filepath.name][0]
-site = meta_info.site[meta_idx]
-
-oar_list = HaN_OAR_LIST if site == 1 else Lung_OAR_LIST
-oar_comb = (np.stack([d[oar_name] for oar_name in oar_list]).sum(0)!=0).astype(np.uint8)
-
-ptvs, ptv_arrs = parse_ptv_info(ptv_info[pat_id], d, dose_div)
-
-# CT, Dose, beam plate, ptv_high/mid/low, oar combined
-to_crop = dict(
-    img = torch.tensor(
-        np.stack([ct, dose, d.beam_plate, *ptv_arrs, oar_comb])
-    ).float()
-)
-
 def get_tfm(keys, in_size, out_size, crop_center):
     return Compose([
         SpatialCropd(keys = keys, roi_center = crop_center, roi_size = in_size, allow_missing_keys = True),
@@ -93,30 +54,82 @@ def get_tfm(keys, in_size, out_size, crop_center):
         Resized(keys = keys, spatial_size = out_size, allow_missing_keys = True), 
     ])
 
-in_size = ct.shape
 
-pad = get_tfm(['img'], in_size, out_size, isocenter)
+class Data(Dataset):
+    def __init__(self, meta_csv_path, ptv_json_path, str_json_path, dose_div=10, out_size=None):
+        super().__init__()
+        self.dose_div = dose_div
+        if out_size is None: self.out_size = [96, 128, 144]
+        self.meta_info = pd.read_csv(meta_csv_path)
+        self.ptv_info = json.load(open(ptv_json_path))
+        self.str_info = json.load(open(str_json_path))
 
-ct, dose, beam_plate, *ptv_arrs, oar_comb = pad(to_crop)['img'].unsqueeze(1).unbind()
+    def prepare_data(self, filepath):
+        _id = filepath.name.split('.')[0]
+        pat_id = _id.split('+')[0]
 
-data = dict(
-    ct = ct,
-    dose = dose,
-    beam_plate = beam_plate,
-    ptv_h = ptv_arrs[0],
-    ptv_m = ptv_arrs[1],
-    ptv_l = ptv_arrs[2],
-    oar_comb = oar_comb
-)
+        npz = np.load(filepath, allow_pickle=True)
+        d = EasyDict(npz['arr_0'].item())
 
-info = dict(
-    _id = _id,
-    pat_id = pat_id,
-    filepath = filepath,
-    meta_info = meta_info.iloc[meta_idx],
-    ptv_info = ptv_info[pat_id],
-    in_size = in_size,
-    out_size = out_size,
-    isocenter = isocenter,
-    ori_shape = d.img.shape
-)
+        # d.keys()
+        # ['50per_Ring1.5-5', 'Body', 'Body_Ring0-3', 'BrachialPlexus', 'CTV', 'Esophagus', 'GTV', 'GreatVessels', 'Heart', 'LAD', 'Lung_Cntr', 'Lung_Ipsi', 'Lung_Total', 'PTV', 'PTV_Ring.3-2', 'SpinalCord', 'SpinalCord_05', 'Total Lung-GTV', 'Trachea', 'all_mask', 'img', 'dose', 'dose_scale', 'isVMAT', 'isocenter', 'angle_list', 'origin', 'spacing', 'direction', 'size', 'angle_plate', 'beam_plate']
+
+
+        dose = process_dose(d, self.ptv_info[pat_id], self.dose_div)
+        ct = process_ct(d.img)
+
+        isocenter = d.isocenter
+
+        # Use filepath to match with the meta index
+        meta_idx = [i for i,v in enumerate(self.meta_info.npz_path.str.split('/')) if v[-1]==filepath.name][0]
+        site = self.meta_info.site[meta_idx]
+
+        oar_list = HaN_OAR_LIST if site == 1 else Lung_OAR_LIST
+        oar_comb = (np.stack([d[oar_name] for oar_name in oar_list]).sum(0)!=0).astype(np.uint8)
+
+        ptvs, ptv_arrs = parse_ptv_info(self.ptv_info[pat_id], d, self.dose_div)
+
+        # CT, Dose, beam plate, ptv_high/mid/low, oar combined
+        to_crop = dict(
+            img = torch.tensor(
+                np.stack([ct, dose, d.beam_plate, *ptv_arrs, oar_comb])
+            ).float()
+        )
+
+        in_size = d.img.shape
+        pad = get_tfm(['img'], in_size, self.out_size, isocenter)
+        ct, dose, beam_plate, *ptv_arrs, oar_comb = pad(to_crop)['img'].unsqueeze(1).unbind()
+
+        data = dict(
+            ct = ct,
+            dose = dose,
+            beam_plate = beam_plate,
+            ptv_h = ptv_arrs[0],
+            ptv_m = ptv_arrs[1],
+            ptv_l = ptv_arrs[2],
+            oar_comb = oar_comb
+        )
+
+        info = dict(
+            _id = _id,
+            pat_id = pat_id,
+            filepath = filepath,
+            meta_info = self.meta_info.iloc[meta_idx],
+            ptv_info = self.ptv_info[pat_id],
+            in_size = in_size,
+            out_size = self.out_size,
+            isocenter = isocenter,
+        )
+
+        return data, info
+
+if __name__ == "__main__":
+    
+
+    meta_path = '/workspaces/GDP-HMM_AAPMChallenge/data/meta_data.csv'
+    ptv_path = '/workspaces/GDP-HMM_AAPMChallenge/data/PTV_DICT.json'
+    str_path = '/workspaces/GDP-HMM_AAPMChallenge/data/Pat_Obj_DICT.json'
+
+    ds = Data(meta_path, ptv_path, str_path)
+    filepath = Path('/workspaces/GDP-HMM_AAPMChallenge/data/0617-259694+imrt+MOS_33896.npz')
+    data, info = ds.prepare_data(filepath)
