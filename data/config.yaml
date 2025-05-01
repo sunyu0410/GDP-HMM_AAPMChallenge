@@ -5,8 +5,8 @@ loader_params:
     'train_bs': 4
     'val_bs': 8
     'csv_root': 'data/meta_data.csv'
-    'scale_dose_dict': 'meta_files/PTV_DICT.json'
-    'pat_obj_dict': 'meta_files/Pat_Obj_DICT.json'
+    'scale_dose_dict': 'data/PTV_DICT.json'
+    'pat_obj_dict': 'data/Pat_Obj_DICT.json'
     'num_workers': 4
 
     'down_HU': -1000
