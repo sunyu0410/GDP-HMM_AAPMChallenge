@@ -152,6 +152,6 @@ if __name__ == "__main__":
     ptv_path = '/workspaces/GDP-HMM_AAPMChallenge/data/PTV_DICT.json'
     str_path = '/workspaces/GDP-HMM_AAPMChallenge/data/Pat_Obj_DICT.json'
 
-    ds = Data(meta_path, ptv_path, str_path)
+    ds = Data(meta_path, ptv_path, str_path, 'train', 'train')
     filepath = Path('/workspaces/GDP-HMM_AAPMChallenge/data/0617-259694+imrt+MOS_33896.npz')
     data, info = ds.prepare_data(filepath)
